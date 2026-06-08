@@ -52,16 +52,14 @@ st.markdown("""
 # Streamlit Cloud → Secrets에서 가져오기
 # 로컬 → .env 파일 또는 직접 입력
 def get_api_key():
-    # 1순위: Streamlit Secrets (배포 환경)
-    try:
+    # Streamlit Cloud Secrets
+    if "ANTHROPIC_API_KEY" in st.secrets:
         return st.secrets["ANTHROPIC_API_KEY"]
-    except Exception:
-        pass
-    # 2순위: 환경변수 (로컬 .env)
+    # 로컬 환경변수
     key = os.environ.get("ANTHROPIC_API_KEY", "")
     if key:
         return key
-    # 3순위: 세션에 저장된 키
+    # 세션 직접 입력
     return st.session_state.get("api_key", "")
 
 # ── 시스템 프롬프트 ───────────────────────────────────────
